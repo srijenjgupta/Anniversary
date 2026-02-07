@@ -6,43 +6,231 @@
     <title>Happy 26th Anniversary!</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background: #fff5f5; color: #4a4a4a; margin: 0; padding: 20px; }
-        .hero-img { width: 90%; max-width: 400px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: 20px; border: 5px solid white; }
-        .game-container { background: white; padding: 20px; border-radius: 15px; margin: 20px auto; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .btn { background: #ff4d6d; color: white; border: none; padding: 15px 30px; border-radius: 50px; font-size: 18px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        .hidden { display: none; }
-        #message { font-size: 24px; color: #ff4d6d; font-weight: bold; animation: heartbeat 1.5s infinite; }
-        @keyframes heartbeat { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff5f5;
+            --gold: #d4af37;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            text-align: center;
+            background: var(--soft-pink);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(255, 77, 109, 0.2);
+            border: 8px solid white;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .game-card {
+            background: white;
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-top: 10px;
+        }
+
+        .btn {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Stats Styling */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .stat-box {
+            background: var(--soft-pink);
+            padding: 10px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-pink);
+        }
+
+        .stat-number {
+            display: block;
+            font-weight: bold;
+            color: var(--primary-pink);
+            font-size: 1.2rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        #final-message {
+            font-size: 1.5rem;
+            color: var(--primary-pink);
+            font-weight: bold;
+            margin: 15px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
 
-    <h1>26 Years of Love ❤️</h1>
-    <img src="parents.jpg" alt="Mom and Dad" class="hero-img">
+    <div class="container">
+        <h1>26 Years of Love ❤️</h1>
+        
+        <img src="parents.jpg" alt="Mom and Dad" class="hero-img">
 
-    <div class="game-container">
-        <div id="game-ui">
-            <p id="game-text">Mom & Dad, you've completed 25 levels of marriage!</p>
-            <p><strong>Can you unlock Level 26?</strong></p>
-            <button class="btn" onclick="nextLevel()">Tap to Unlock Level 26</button>
-        </div>
+        <div class="game-card">
+            <div id="game-ui">
+                <p style="font-size: 1.1rem;">Mom & Dad, you have successfully completed <strong>Level 25</strong> of marriage!</p>
+                <p>Ready to enter the next chapter?</p>
+                <button class="btn" onclick="unlockLevel()">Unlock Level 26 🔓</button>
+            </div>
 
-        <div id="final-wish" class="hidden">
-            <div id="message">Happy 26th Anniversary! 🥂</div>
-            <p>To a lifetime of health, laughter, and more adventures together. You guys are the GOAT parents!</p>
+            <div id="reward-ui" class="hidden">
+                <div id="final-message">LEVEL 26 UNLOCKED! 🏆</div>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number">9,496+</span>
+                        <span class="stat-label">Days of Smiles</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">227,904+</span>
+                        <span class="stat-label">Hours of Love</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">1</span>
+                        <span class="stat-label">Beautiful Family</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number">Infinite</span>
+                        <span class="stat-label">Health & Joy</span>
+                    </div>
+                </div>
+
+                <p>Wishing you the healthiest and happiest 26th year together!</p>
+                <button class="btn" onclick="moreLove()" style="background: #4a4a4a; font-size: 0.9rem;">Send More Love ❤️</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function nextLevel() {
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#ff4d6d', '#ffb3c1', '#ffffff']
-            });
+        function unlockLevel() {
+            // 1. Explosion effect
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff4d6d', '#ffffff']
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff4d6d', '#ffffff']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+
+            // 2. Switch UI
             document.getElementById('game-ui').classList.add('hidden');
-            document.getElementById('final-wish').classList.remove('hidden');
+            document.getElementById('reward-ui').classList.remove('hidden');
+
+            // 3. Start Heart Rain
+            setInterval(createHeart, 400);
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.bottom = "-5vh";
+            heart.style.opacity = Math.random();
+            heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+            
+            const duration = Math.random() * 3 + 2;
+            heart.style.transition = `transform ${duration}s linear, opacity ${duration}s`;
+            
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.style.transform = `translateY(-105vh) rotate(${Math.random() * 360}deg)`;
+                heart.style.opacity = "0";
+            }, 100);
+
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        function moreLove() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
         }
     </script>
 </body>
